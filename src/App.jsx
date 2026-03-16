@@ -21,12 +21,17 @@ const App = () => {
         }
     }
 
+    //
+    const onDelete = (index) => {
+        setToDos(toDos.filter((_, i) => i !== index))
+    };
+
 
 // 렌더링 파트(JSX & TSX = 태그를 사용할 수 있게해주는 구간)===================================================================
     return (
         <div className="container">
             <h1 className="title">My Todos(<span>{toDos.length}</span>개)</h1>
-            <form onSubmit={onSubmit} className="todo-form">
+            <form onSubmit={(event) => onSubmit(event)} className="todo-form">
                 <input type="text"
                        value={toDo}
                        onChange={onChange}
@@ -37,7 +42,12 @@ const App = () => {
             <ul className="todo-list">
 
                 {toDos.map((items, index) => (
-                    <li key={index} className="todo-item">{items}</li>
+                    <li key={index} className="todo-item">{items}
+                    <button className="delete-btn"
+                    onClick={()=> onDelete(index)}>
+                    삭제하기
+                    </button>
+                    </li>
                 ))}
             </ul>
         </div>
