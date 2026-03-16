@@ -1,4 +1,5 @@
 import {useState} from "react";
+import "./style/App.css"
 
 const App = () => {
     // todo리스트 1건에 대한 입력
@@ -23,9 +24,9 @@ const App = () => {
 
 // 렌더링 파트(JSX & TSX = 태그를 사용할 수 있게해주는 구간)===================================================================
     return (
-        <div>
-            <h1>My Todos({toDos.length}개)</h1>
-            <form onSubmit={onSubmit}>
+        <div className="container">
+            <h1 className="title">My Todos(<span>{toDos.length}</span>개)</h1>
+            <form onSubmit={onSubmit} className="todo-form">
                 <input type="text"
                        value={toDo}
                        onChange={onChange}
@@ -33,10 +34,10 @@ const App = () => {
                 <button>추가하기</button>
             </form>
             <hr/>
-            <ul>
+            <ul className="todo-list">
 
                 {toDos.map((items, index) => (
-                    <li key={index}>{items}</li>
+                    <li key={index} className="todo-item">{items}</li>
                 ))}
             </ul>
         </div>
