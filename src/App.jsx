@@ -132,8 +132,9 @@ const App = () => {
     };
 
     const onDelete = (index) => {
+        if (!window.confirm("정말 삭제하시겠습니까?")) return;
         setToDos(toDos.filter((_, i) => i !== index));
-        if (editingIndex === index) setEditingIndex(null);
+        if (editingIndex === index) setEditingIndex(null);2
     };
 
     const startEdit = (index, item) => {
