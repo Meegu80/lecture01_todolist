@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./style/App.css";
 
 // ───────────────────────────────────────────
 // IndexedDB 헬퍼
