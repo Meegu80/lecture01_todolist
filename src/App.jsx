@@ -220,49 +220,51 @@ const App = () => {
             )}
 
             <div className="todo-section">
-                {/* 헤더: 제목 + 로그아웃 */}
-                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"4px" }}>
-                    <h1 className="title" style={{ margin:0 }}>My ToDo (<span>{toDos.length}</span>)</h1>
-                    <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-                        <img src={user.photoURL} alt="" style={{ width:"28px", height:"28px", borderRadius:"50%" }} />
-                        <button onClick={() => signOut(auth)} style={{
-                            padding:"5px 10px", border:"1px solid #ddd", borderRadius:"6px",
-                            background:"white", cursor:"pointer", fontSize:"12px", color:"#666"
-                        }}>로그아웃</button>
-                    </div>
-                </div>
-
-                <p className="selected-date-label">{calMonth + 1}월 {selectedDay}일 할 일</p>
-
-                {/* 입력 폼 */}
-                <form className="todo-form" onSubmit={onSubmit}>
-                    <div className="form-text-row">
-                        <input
-                            type="text"
-                            value={toDo}
-                            onChange={(e) => setToDo(e.target.value)}
-                            placeholder="할 일 입력..."
-                        />
-                        <button type="submit">추가</button>
-                    </div>
-                    <div className="form-date-row">
-                        <div className="date-chip start">
-                            <span className="chip-label">시작</span>
-                            <span className="chip-value">{calMonth + 1}/{selectedDay}</span>
+                <div className="todo-header">
+                    {/* 헤더: 제목 + 로그아웃 */}
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"4px" }}>
+                        <h1 className="title" style={{ margin:0 }}>My ToDo (<span>{toDos.length}</span>)</h1>
+                        <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+                            <img src={user.photoURL} alt="" style={{ width:"28px", height:"28px", borderRadius:"50%" }} />
+                            <button onClick={() => signOut(auth)} style={{
+                                padding:"5px 10px", border:"1px solid #ddd", borderRadius:"6px",
+                                background:"white", cursor:"pointer", fontSize:"12px", color:"#666"
+                            }}>로그아웃</button>
                         </div>
-                        <span className="date-arrow">→</span>
-                        <div className="date-chip end">
-                            <span className="chip-label">종료</span>
+                    </div>
+
+                    <p className="selected-date-label">{calMonth + 1}월 {selectedDay}일 할 일</p>
+
+                    {/* 입력 폼 */}
+                    <form className="todo-form" onSubmit={onSubmit}>
+                        <div className="form-text-row">
                             <input
-                                type="date"
-                                value={endDate}
-                                min={todayKey}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className="date-picker"
+                                type="text"
+                                value={toDo}
+                                onChange={(e) => setToDo(e.target.value)}
+                                placeholder="할 일 입력..."
                             />
+                            <button type="submit">추가</button>
                         </div>
-                    </div>
-                </form>
+                        <div className="form-date-row">
+                            <div className="date-chip start">
+                                <span className="chip-label">시작</span>
+                                <span className="chip-value">{calMonth + 1}/{selectedDay}</span>
+                            </div>
+                            <span className="date-arrow">→</span>
+                            <div className="date-chip end">
+                                <span className="chip-label">종료</span>
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    min={todayKey}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    className="date-picker"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
                 {/* 할 일 목록 */}
                 <ul className="todo-list">
