@@ -96,6 +96,22 @@ const App = () => {
     const [editEndDate, setEditEndDate] = useState("");
     const [deleteTargetIndex, setDeleteTargetIndex] = useState(null);
 
+    // 달력 표시 연/월
+    const [calYear, setCalYear] = useState(year);
+    const [calMonth, setCalMonth] = useState(month);
+
+    const calFirstDay = new Date(calYear, calMonth, 1).getDay();
+    const calDaysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    const goPrevMonth = () => {
+        if (calMonth === 0) { setCalYear(y => y - 1); setCalMonth(11); }
+        else setCalMonth(m => m - 1);
+    };
+    const goNextMonth = () => {
+        if (calMonth === 11) { setCalYear(y => y + 1); setCalMonth(0); }
+        else setCalMonth(m => m + 1);
+    };
+
     useEffect(() => {
         (async () => {
             const map = await loadAllFromDB();
@@ -115,7 +131,7 @@ const App = () => {
     const onDayClick = async (day) => {
         setSelectedDay(day);
         setEditingIndex(null);
-        const key = toDateKey(year, month, day);
+        const key = toDateKey(calYear, calMonth, day);
         const items = await loadFromDB(key);
         setToDos(items);
     };
@@ -180,12 +196,12 @@ const App = () => {
     };
 
     const calendarCells = [];
-    for (let i = 0; i < firstDay; i++) calendarCells.push(null);
-    for (let d = 1; d <= daysInMonth; d++) calendarCells.push(d);
+    for (let i = 0; i < calFirstDay; i++) calendarCells.push(null);
+    for (let d = 1; d <= calDaysInMonth; d++) calendarCells.push(d);
 
-    const monthLabel = today.toLocaleString("ko-KR", { year: "numeric", month: "long" });
+    const monthLabel = new Date(calYear, calMonth, 1).toLocaleString("ko-KR", { year: "numeric", month: "long" });
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-    const selectedLabel = `${month + 1}월 ${selectedDay}일`;
+    const selectedLabel = `${calMonth + 1}월 ${selectedDay}일`;
     const minEndDate = todayKey;
 
     return (
@@ -288,7 +304,11 @@ const App = () => {
             {/* 오른쪽: 달력 */}
             <div className="calendar-section">
                 <div className="calendar">
-                    <div className="calendar-header">{monthLabel}</div>
+                    <div className="calendar-header">
+                        <button className="cal-nav-btn" onClick={goPrevMonth}>‹</button>
+                        <span>{monthLabel}</span>
+                        <button className="cal-nav-btn" onClick={goNextMonth}>›</button>
+                    </div>
                     <div className="calendar-grid">
                         {dayNames.map((d, i) => (
                             <div key={d} className={`cal-day-name ${i === 0 ? "sun" : i === 6 ? "sat" : ""}`}>{d}</div>
@@ -296,10 +316,10 @@ const App = () => {
                         {calendarCells.map((day, idx) => {
                             if (!day) return <div key={`empty-${idx}`} className="cal-empty" />;
 
-                            const key = toDateKey(year, month, day);
-                            const isToday = day === today.getDate();
-                            const isSelected = day === selectedDay;
-                            const colIdx = (firstDay + day - 1) % 7;
+                            const key = toDateKey(calYear, calMonth, day);
+                            const isToday = calYear === year && calMonth === month && day === today.getDate();
+                            const isSelected = calYear === year && calMonth === month && day === selectedDay;
+                            const colIdx = (calFirstDay + day - 1) % 7;
                             const rangeItems = getRangeItemsForDay(key);
 
                             return (
