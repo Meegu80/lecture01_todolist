@@ -755,3 +755,59 @@ html, body {
     .cal-todo-item { font-size: 8px; padding: 1px 3px; }
     .more-todos    { font-size: 8px; }
 }
+
+/* ── 로그인 페이지 ── */
+.login-page {
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6f9;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-title {
+    font-size: 28px;
+    margin: 0 0 12px;
+    color: #2c3e50;
+}
+.login-title span { color: #3498db; }
+
+.login-subtitle {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.7;
+    margin: 0 0 32px;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 13px 20px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    font-size: 15px;
+    font-weight: bold;
+    color: #444;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+}
+.login-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
