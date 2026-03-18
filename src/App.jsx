@@ -65,19 +65,23 @@ function toDateKey(year, month, day) {
 // ───────────────────────────────────────────
 const App = () => {
     const today = new Date();
-    const todayKey = toDateKey(today.getFullYear(), today.getMonth(), today.getDate());
-
     const year = today.getFullYear();
     const month = today.getMonth();
+    const todayKey = toDateKey(year, month, today.getDate());
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    // States
     const [toDo, setToDo] = useState("");
     const [toDos, setToDos] = useState([]);
     const [allToDos, setAllToDos] = useState({});
     const [selectedDay, setSelectedDay] = useState(today.getDate());
     const [initialized, setInitialized] = useState(false);
+
+    // 수정 기능을 위한 추가 State
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [editText, setEditText] = useState("");
 
     // 초기 DB 로드
     useEffect(() => {
@@ -99,6 +103,7 @@ const App = () => {
 
     const onDayClick = async (day) => {
         setSelectedDay(day);
+        setEditingIndex(null); // 날짜 변경 시 수정 모드 초기화
         const key = toDateKey(year, month, day);
         const items = await loadFromDB(key);
         setToDos(items);
@@ -115,16 +120,36 @@ const App = () => {
 
     const onDelete = (index) => {
         setToDos(toDos.filter((_, i) => i !== index));
+        if (editingIndex === index) setEditingIndex(null);
     };
 
-    // 달력 셀
+    // 수정 핸들러들
+    const startEdit = (index, text) => {
+        setEditingIndex(index);
+        setEditText(text);
+    };
+
+    const cancelEdit = () => {
+        setEditingIndex(null);
+        setEditText("");
+    };
+
+    const onSave = (index) => {
+        if (editText.trim() === "") return;
+        const newToDos = [...toDos];
+        newToDos[index] = editText;
+        setToDos(newToDos);
+        setEditingIndex(null);
+        setEditText("");
+    };
+
+    // 달력 셀 생성
     const calendarCells = [];
     for (let i = 0; i < firstDay; i++) calendarCells.push(null);
     for (let d = 1; d <= daysInMonth; d++) calendarCells.push(d);
 
     const monthLabel = today.toLocaleString("ko-KR", { year: "numeric", month: "long" });
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-
     const selectedLabel = `${month + 1}월 ${selectedDay}일`;
 
     return (
@@ -142,7 +167,7 @@ const App = () => {
                     onChange={onChange}
                     placeholder="Write your to do..."
                 />
-                <button>Add To Do</button>
+                <button type="submit">Add To Do</button>
             </form>
 
             <ul className="todo-list">
@@ -151,10 +176,28 @@ const App = () => {
                 )}
                 {toDos.map((item, index) => (
                     <li key={index} className="todo-item">
-                        {item}
-                        <button className="delete-btn" onClick={() => onDelete(index)}>
-                            삭제
-                        </button>
+                        {editingIndex === index ? (
+                            <>
+                                <input
+                                    className="edit-input"
+                                    value={editText}
+                                    onChange={(e) => setEditText(e.target.value)}
+                                    autoFocus
+                                />
+                                <div className="btn-group">
+                                    <button className="save-btn" onClick={() => onSave(index)}>저장</button>
+                                    <button className="cancel-btn" onClick={cancelEdit}>취소</button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <span className="todo-text">{item}</span>
+                                <div className="btn-group">
+                                    <button className="edit-btn" onClick={() => startEdit(index, item)}>수정</button>
+                                    <button className="delete-btn" onClick={() => onDelete(index)}>삭제</button>
+                                </div>
+                            </>
+                        )}
                     </li>
                 ))}
             </ul>
@@ -193,9 +236,10 @@ const App = () => {
                                 <span className="cal-day-num">{day}</span>
                                 {hasTodos && (
                                     <ul className="cal-todo-list">
-                                        {allToDos[key].map((t, i) => (
+                                        {allToDos[key].slice(0, 2).map((t, i) => (
                                             <li key={i} className="cal-todo-item">{t}</li>
                                         ))}
+                                        {allToDos[key].length > 2 && <li className="cal-todo-item">...</li>}
                                     </ul>
                                 )}
                             </div>

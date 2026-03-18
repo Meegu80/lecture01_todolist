@@ -50,8 +50,8 @@ body {
     font-size: 14px;
 }
 
-/* 추가 버튼 */
-.todo-form button {
+/* 추가 버튼만 별도 지정 */
+.todo-form > button {
     padding: 10px 15px;
     border: none;
     background: #3498db;
@@ -59,8 +59,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
     white-space: nowrap;
+    font-size: 14px;
 }
-.todo-form button:hover {
+.todo-form > button:hover {
     background: #2980b9;
 }
 
@@ -90,21 +91,88 @@ body {
     background: #f8f9fa;
     border-radius: 5px;
     border-left: 5px solid #3498db;
+    gap: 8px;
+}
+
+/* 할 일 텍스트 */
+.todo-text {
+    flex: 1;
+    word-break: break-all;
+}
+
+/* 버튼 그룹 */
+.btn-group {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* 수정 버튼 */
+.edit-btn {
+    padding: 4px 10px !important;
+    border: none !important;
+    background: #f39c12 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    display: inline-block !important;
+}
+.edit-btn:hover {
+    background: #d68910 !important;
 }
 
 /* 삭제 버튼 */
 .delete-btn {
-    padding: 4px 10px;
-    border: none;
-    background: #e74c3c;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    flex-shrink: 0;
+    padding: 4px 10px !important;
+    border: none !important;
+    background: #e74c3c !important;
+    color: white !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    display: inline-block !important;
 }
 .delete-btn:hover {
-    background: #c0392b;
+    background: #c0392b !important;
+}
+
+/* 수정 모드 input */
+.edit-input {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* 저장 버튼 */
+.save-btn {
+    padding: 4px 10px !important;
+    border: none !important;
+    background: #27ae60 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+}
+.save-btn:hover {
+    background: #1e8449 !important;
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+    padding: 4px 10px !important;
+    border: none !important;
+    background: #95a5a6 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+}
+.cancel-btn:hover {
+    background: #7f8c8d !important;
 }
 
 /* ─────────────────────────────
