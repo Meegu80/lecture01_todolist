@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./style/App.css";
+import ConfirmModal from "./common/modal/ConfirmModal.jsx";
 
 const DB_NAME = "todoDB";
 const DB_VERSION = 2;
@@ -93,6 +94,7 @@ const App = () => {
     const [editingIndex, setEditingIndex] = useState(null);
     const [editText, setEditText] = useState("");
     const [editEndDate, setEditEndDate] = useState("");
+    const [deleteTargetIndex, setDeleteTargetIndex] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -131,10 +133,12 @@ const App = () => {
         setEndDate("");
     };
 
-    const onDelete = (index) => {
-        if (!window.confirm("정말 삭제하시겠습니까?")) return;
-        setToDos(toDos.filter((_, i) => i !== index));
-        if (editingIndex === index) setEditingIndex(null);2
+    const onDelete = (index) => setDeleteTargetIndex(index);
+
+    const confirmDelete = () => {
+        setToDos(toDos.filter((_, i) => i !== deleteTargetIndex));
+        if (editingIndex === deleteTargetIndex) setEditingIndex(null);
+        setDeleteTargetIndex(null);
     };
 
     const startEdit = (index, item) => {
@@ -186,6 +190,13 @@ const App = () => {
 
     return (
         <div className="container">
+            {deleteTargetIndex !== null && (
+                <ConfirmModal
+                    message="이 할 일을 삭제하시겠습니까?"
+                    onConfirm={confirmDelete}
+                    onCancel={() => setDeleteTargetIndex(null)}
+                />
+            )}
             {/* 왼쪽: 할 일 목록 */}
             <div className="todo-section">
                 <h1 className="title">My ToDo (<span>{toDos.length}</span>)</h1>
