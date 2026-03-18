@@ -65,3 +65,23 @@
     color: white;
 }
 .modal-confirm-btn:hover { background: #c0392b; }
+
+/* ConfirmModal.css 내부에 추가 또는 수정 */
+@media (max-width: 480px) {
+    .modal-box {
+        width: 85%; /* 화면의 85% 사용 */
+        min-width: unset;
+        padding: 20px;
+    }
+
+    .modal-message {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .modal-cancel-btn,
+    .modal-confirm-btn {
+        flex: 1; /* 버튼이 너비를 반씩 나눠 가짐 */
+        padding: 12px 0;
+    }
+}

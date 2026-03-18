@@ -456,24 +456,302 @@ html, body {
     justify-content: center;
 }
 
-/* 반응형 */
-@media (max-width: 900px) {
+/* ═══════════════════════════════════════════════
+   모바일 & 태블릿 (1024px 이하)
+   ─ 1024px 초과 데스크탑 레이아웃은 절대 건드리지 않음
+═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+    /* ── 루트 ── */
+    html, body {
+        height: 100dvh;
+        overflow: hidden;
+        align-items: stretch;
+    }
+
+    /* ── 컨테이너: 세로 분할, 전체 화면 채움 ── */
     .container {
+        width: 100%;
+        height: 100dvh;
+        padding: 0;
         flex-direction: column;
-        min-height: auto;
-        min-width: unset;
+        overflow: hidden;
+        border-radius: 0;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        box-sizing: border-box;
     }
+
+    /* ── 할 일 섹션: 고정 영역 ── */
     .todo-section {
-        flex: none;
+        flex: 0 0 auto;
         width: 100%;
-        padding-right: 0;
-        padding-bottom: 20px;
+        padding: 14px 16px 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        border-bottom: 2px solid #eee;
     }
-    .section-divider {
+
+    .title {
+        font-size: 20px;
+        margin: 0 0 4px;
+    }
+
+    .selected-date-label {
+        font-size: 13px;
+        margin: 0 0 10px;
+    }
+
+    .todo-form {
+        gap: 8px;
+    }
+
+    .form-text-row {
+        flex-direction: row;
+        gap: 8px;
+    }
+    .form-text-row input {
+        font-size: 16px;    /* iOS 자동 확대 방지: 16px 이상 필수 */
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+    .form-text-row button {
+        min-width: 60px;
+        min-height: 44px;
+        font-size: 15px;
+        padding: 10px 16px;
+        border-radius: 10px;
+    }
+
+    .form-date-row {
+        padding: 8px 12px;
+        gap: 8px;
+        flex-wrap: nowrap;
+        border-radius: 10px;
+    }
+    .date-chip {
+        padding: 5px 9px;
+        flex-shrink: 0;
+    }
+    .chip-label { font-size: 10px; }
+    .chip-value { font-size: 13px; }
+    .date-picker { font-size: 13px; }
+
+    /* ── 할 일 목록: 스크롤 가능, max-height로 달력 공간 확보 ── */
+    .todo-list {
+        margin-top: 10px;
+        flex: 1 1 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 2px;
+        max-height: 22dvh;
+    }
+    .todo-list::-webkit-scrollbar { display: none; }
+
+    .todo-item {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        gap: 10px;
+    }
+    .todo-text { font-size: 14px; }
+    .todo-range { font-size: 11px; }
+
+    .todo-item button {
+        padding: 8px 13px !important;
+        font-size: 13px !important;
+        min-height: 36px;
+    }
+    .btn-group { gap: 6px; }
+
+    .edit-input { font-size: 16px; }
+
+    /* ── 구분선: 숨김 (border-bottom으로 대체) ── */
+    .section-divider { display: none; }
+
+    /* ── 달력 섹션: 남은 공간 전부 차지 ── */
+    .calendar-section {
+        flex: 1 1 0;
         width: 100%;
-        height: 2px;
-        margin: 0 0 20px 0;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 16px;
+        box-sizing: border-box;
+        padding-bottom: calc(10px + env(safe-area-inset-bottom));
     }
-    .calendar-section { width: 100%; }
-    .cal-day, .cal-empty { min-height: 80px; }
+
+    .calendar {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .calendar-header {
+        flex-shrink: 0;
+        font-size: 17px;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+    .cal-nav-btn {
+        font-size: 26px;
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .calendar-grid {
+        flex: 1 1 0;
+        min-height: 0;
+        gap: 3px;
+    }
+
+    .cal-day-name {
+        font-size: 12px;
+        padding: 4px 0;
+        margin-bottom: 2px;
+    }
+
+    .cal-day,
+    .cal-empty {
+        min-height: unset;
+        padding: 4px 5px;
+        border-radius: 6px;
+    }
+
+    .cal-day-num {
+        font-size: 12px;
+    }
+    .cal-day.cal-today .cal-day-num {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+    }
+
+    .cal-todo-item {
+        font-size: 9px;
+        padding: 1px 4px;
+        border-radius: 3px;
+    }
+    .more-todos { font-size: 9px; }
+}
+
+/* ═══════════════════════════════════════════════
+   초소형 기기 (480px 이하) — 모바일 스타일 위에 덮음
+   아이폰 16 Pro Max(440px CSS) 포함
+═══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+    /* ── 루트: 화면 꽉 채우기 ── */
+    html, body {
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    /* ── 컨테이너: 화면 전체를 빈틈없이 채움 ── */
+    .container {
+        width: 100vw;
+        height: 100dvh;
+        min-height: 100dvh;
+        padding: 0;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* ── 할 일 섹션: 최소 패딩, flex 고정 ── */
+    .todo-section {
+        flex: 0 0 auto;
+        width: 100%;
+        padding: 10px 12px 8px;
+        box-sizing: border-box;
+    }
+
+    .title { font-size: 18px; margin: 0 0 2px; }
+    .selected-date-label { font-size: 12px; margin: 0 0 8px; }
+
+    .todo-form { gap: 6px; }
+    .form-text-row input  { font-size: 16px; padding: 9px 10px; }
+    .form-text-row button { padding: 9px 14px; font-size: 14px; min-height: 42px; }
+    .form-date-row        { padding: 7px 10px; gap: 6px; }
+
+    /* 할 일 목록: max-height 고정 해제 → flex로 내용에 맞게 자동 조절 */
+    .todo-list {
+        max-height: none;
+        flex: 1 1 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-top: 8px;
+    }
+    .todo-list::-webkit-scrollbar { display: none; }
+
+    .todo-item { padding: 9px 10px; margin-bottom: 7px; }
+    .todo-text  { font-size: 14px; }
+    .todo-range { font-size: 11px; }
+
+    .btn-group { gap: 5px; }
+    .btn-group button {
+        padding: 7px 11px !important;
+        font-size: 12px !important;
+        min-height: 34px;
+    }
+
+    /* ── 달력 섹션: 남은 공간 전부 ── */
+    .calendar-section {
+        flex: 1 1 0;
+        min-height: 0;
+        padding: 8px 10px;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom));
+        box-sizing: border-box;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .calendar {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .calendar-header {
+        flex-shrink: 0;
+        font-size: 16px;
+        gap: 10px;
+        margin-bottom: 6px;
+    }
+    .cal-nav-btn { font-size: 24px; min-width: 40px; min-height: 40px; }
+
+    /* 달력 그리드: 남은 세로 공간 균등 분배 */
+    .calendar-grid {
+        flex: 1 1 0;
+        min-height: 0;
+        gap: 2px;
+    }
+
+    .cal-day-name { font-size: 11px; padding: 3px 0; }
+
+    /* 날짜 셀: 고정 min-height 완전 제거 */
+    .cal-day,
+    .cal-empty {
+        min-height: unset;
+        padding: 3px 4px;
+    }
+
+    .cal-day-num { font-size: 11px; }
+    .cal-day.cal-today .cal-day-num { width: 20px; height: 20px; font-size: 11px; }
+
+    .cal-todo-item { font-size: 8px; padding: 1px 3px; }
+    .more-todos    { font-size: 8px; }
 }
